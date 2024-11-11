@@ -12,3 +12,11 @@
     - iterativamente:
         - ogni router manda ad ogni suo vicino la sua tabella
         - ogni router aggiorna la sua tabella con le tabelle che ha ricevuto
+
+ROUTING TABLE:
+    destination     destination-mask    gateway     interface       distance
+        ip                  ip            ip          string           int
+
+## notes
+
+    - allow nil (=-1) and infinite (=16) values for distance
