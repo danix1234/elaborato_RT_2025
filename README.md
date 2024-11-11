@@ -14,14 +14,10 @@
         - ogni router aggiorna la sua tabella con le tabelle che ha ricevuto
 
 ROUTING TABLE:
-   destination      next-hop        distance
-       net-ip           ip             int
-
-    - DISTANCE: allow nil (=-1) and infinite (=16) values for distance
+   destination    destination-mask      next-hop        distance
+       net-ip        ip-mask               ip             int
 
 FORWARDING TABLE:
     destination     destination-mask    gateway     interface     
        net-ip          ip-mask            ip          string     
-
-## notes
 
