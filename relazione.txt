@@ -25,5 +25,28 @@ Nota: il codice è stato testato solo su linux, il funzionamento non è garantit
 Il codice non utilizza nessuna libreria aggiuntiva, solo le funzionalità di
     base fornite da python.
 
+Nello script python, sono presenti due classi: 
+    - Router : contiene tutti i dati relativi ad un singolo router, cioè
+        interfaccie di reti con relativo indirizzo ip, il nome del router,
+        e la routing table relativa al router.
+        Inoltre contiene anche riferimenti a tutti i router (per semplificare
+        alcune operazioni), e soprattutto tutti i collegamenti tra due 
+        router, salvandone i relativi indirizzi ip, e la rete ip a cui 
+        appartengono.
+        
+    - RoutingTable: contiene un elenco di routing entry, e per ciascuno entry,
+        viene memorizzato la rete ip di destinazione, l'indirizzo ip che 
+        rappresenta il salto successivo e la distanza misurata in quantità
+        di salti per raggiungere la destinazione.
+
+La classe Routing table fornisce principalmente operazione per aggiornare le
+    entry, mentre la classe Router fornisce svariate funzioni di utilità 
+    (necessarie per semplicare la lettura del codice), e le funzionalità 
+    principali sono quelle di inizializzare le tabelle di routing per tutti 
+    i router, e successivamente aggiornarle utilizzando le tabelle di routing
+    dei router vicini.
 
 
+Il file topology.png mostra la topologia di esempio utilizzata nello script,
+    quindi si faccia riferimento a tale immagine per la comprensione 
+    dell'output del programma.
