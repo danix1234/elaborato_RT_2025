@@ -8,11 +8,17 @@ class RoutingTable():
 
     def __str__(self, router):
         res = f"Routing Table of {router.name}:"
-        for i, dest in enumerate(self.destination):
+        for i, dest in enumerate(sorted(self.destination)):
             nextHop = self.nextHop[i]
-            nextRouter = Router.findRouter(nextHop).name
+            nextName = Router.findRouter(nextHop).name
             distance = self.distance[i]
-            res += f'\n{dest} via ({nextRouter}) {nextHop}, [{distance}]'
+            interface = router.findNick(nextHop)
+            correctSide = nextHop in router.ipaddr
+            if not correctSide:
+                res += f'\n{dest} [{distance}] via ({nextName}) {nextHop},'
+            else:
+                res += f'\n{dest} is directly connected,'
+            res += f' on {interface}'
         return res
 
     def update(self, destination, nextHop, distance):
@@ -62,6 +68,17 @@ class Router():
         Router.connectionSide1.append(ipAddrSelf)
         Router.connectionSide2.append(ipAddrOther)
         Router.connectionNetwork.append(ipNetwork)
+
+    def findNick(self, nextHop):
+        if nextHop in self.ipaddr:
+            return self.nicks[self.ipaddr.index(nextHop)]
+        if nextHop in Router.connectionSide1:
+            connIndex = Router.connectionSide1.index(nextHop)
+            conn = Router.connectionSide2[connIndex]
+        if nextHop in Router.connectionSide2:
+            connIndex = Router.connectionSide2.index(nextHop)
+            conn = Router.connectionSide1[connIndex]
+        return self.nicks[self.ipaddr.index(conn)]
 
     def findRouter(ipAddr):
         for router in Router.routers:
