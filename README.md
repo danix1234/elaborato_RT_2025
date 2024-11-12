@@ -13,11 +13,18 @@
         - ogni router manda ad ogni suo vicino la sua tabella
         - ogni router aggiorna la sua tabella con le tabelle che ha ricevuto
 
+    - note: i will use classful ip
+
+RIP PACKETS (removed fields i don't need):
+    destination (network ip)
+    next hop (address ip)
+    distance (integer)
+
 ROUTING TABLE:
-   destination    destination-mask      next-hop        distance
-       net-ip        ip-mask               ip             int
+   destination     next-hop        distance
+       net-ip         ip             int
 
 FORWARDING TABLE:
-    destination     destination-mask    gateway     interface     
-       net-ip          ip-mask            ip          string     
+    destination    gateway     interface     
+       net-ip        ip          string     
 
