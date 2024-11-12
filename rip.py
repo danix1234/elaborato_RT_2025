@@ -1,12 +1,43 @@
 #!/bin/python3
+"""
+Python script to simulate the how the rip protocol works.
+In particular, it allows to build a topolofy of n routers and for each router
+    it allows to specify a list of mac addresses and ip address.
+It also allows to simulate connections, altought the code isn't able to
+    calculate the network ip value, thus it needs to be specified. Said
+    networks must have a netmask of /24, since the number is hardcoded to have
+    a complete output.
+After the router topology is built, the script is able to have routers exchange
+    their distance vectors, and for each iteration of such exchanges, it writes
+    to output the content of each router Routing Table.
+
+Notes: The topology isn't run through checks to make sure it's valid.
+       Thus it is necessary to be sure the manual configuration of it is
+       correct, otherwise the script may fail or report invalid results.
+"""
+
 
 class RoutingTable():
+    """
+    Class which contains all the routing entries for a specific router.
+    A routing entry is made up of three values:
+        - destination: a string representing the network id of destination
+        - nextHop: a string representing the ip address of the next hop
+        - distance: an integer representing the distance in amount of hops
+    """
+
     def __init__(self):
+        """
+        Creates empty RoutingTable.
+        """
         self.destination = []
         self.nextHop = []
         self.distance = []
 
     def __str__(self, router):
+        """
+        Pretty formatting of the Routing Table.
+        """
         res = f"Routing Table of {router.name}:"
         for i, dest in enumerate(sorted(self.destination)):
             nextHop = self.nextHop[i]
@@ -22,6 +53,10 @@ class RoutingTable():
         return res
 
     def update(self, destination, nextHop, distance):
+        """
+        Updates routing table if destination is missing, or if
+        the new distance is inferior to the current one.
+        """
         if destination in self.destination:
             i = self.destination.index(destination)
             if self.distance[i] <= distance:
@@ -37,6 +72,10 @@ class RoutingTable():
         return True
 
     def updateAll(self, routingTable, nextHop):
+        """
+        Updates routing table with all the entries from an
+        other routing table.
+        """
         changes = False
         for i, destination in enumerate(routingTable.destination):
             distance = routingTable.distance[i] + 1
@@ -45,12 +84,19 @@ class RoutingTable():
 
 
 class Router():
+    """
+    Class which represents a single router in the topology.
+    It also stores all routers, for semplicity.
+    """
     routers = []
     connectionSide1 = []
     connectionSide2 = []
     connectionNetwork = []
 
     def __init__(self, name):
+        """
+        Create empty Router, with a name.
+        """
         self.name = name
         self.nicks = []
         self.ipaddr = []
@@ -58,6 +104,9 @@ class Router():
         self.routingTable = RoutingTable()
 
     def __str__(self):
+        """
+        Pretty formatting for the router.
+        """
         acc = f"Router {self.name}:\n"
         for i, nick in enumerate(self.nicks):
             ipAddr = self.ipaddr[i]
@@ -65,15 +114,27 @@ class Router():
         return acc
 
     def addNick(self, interfaceName, ipAddr):
+        """
+        To add a nick, with its interface name and the ip address.
+        """
         self.nicks.append(interfaceName)
         self.ipaddr.append(ipAddr)
 
     def addConnection(ipAddrSelf, ipAddrOther, ipNetwork):
+        """
+        To establish a connection between two ip addresses.
+        """
         Router.connectionSide1.append(ipAddrSelf)
         Router.connectionSide2.append(ipAddrOther)
         Router.connectionNetwork.append(ipNetwork)
 
     def findNick(self, nextHop):
+        """
+        Finds the nick of the router associated with the next hop.
+        Note: the next hop can be either the ip address on the other
+            side of the connection, or the ip address on this router
+            side of the connection.
+        """
         if nextHop in self.ipaddr:
             return self.nicks[self.ipaddr.index(nextHop)]
         if nextHop in Router.connectionSide1:
@@ -85,11 +146,17 @@ class Router():
         return self.nicks[self.ipaddr.index(conn)]
 
     def findRouter(ipAddr):
+        """
+        Find the router which has the ip address specified.
+        """
         for router in Router.routers:
             if ipAddr in router.ipaddr:
                 return router
 
     def getConnectedIndexes(self):
+        """
+        Get a list of the index of all connected ip networks.
+        """
         indexes = []
         for i, conn1 in enumerate(Router.connectionSide1):
             conn2 = Router.connectionSide2[i]
@@ -98,6 +165,10 @@ class Router():
         return indexes
 
     def getNeighbors(self):
+        """
+        Get a dictionary of all connected neightbors, with the ip address
+            they have on the connection with this router.
+        """
         neighbors = {}
         for i in self.getConnectedIndexes():
             conn1 = Router.connectionSide1[i]
@@ -109,6 +180,10 @@ class Router():
         return neighbors
 
     def printConnections(self=None):
+        """
+        Pretty output for the established connection between all routers.
+        Note: if self is not None it only shows the connections of this router.
+        """
         if self is not None:
             print(f"Connections of {self.name}")
         else:
@@ -129,6 +204,10 @@ class Router():
             print(f"({r1}) {conn} - ({r2}) {conn2}  -->  {connNetwork}/24")
 
     def printRoutingTable(self=None):
+        """
+        Pretty output for all the routing tables.
+        Note: If self is not None it only shows this router routing table.
+        """
         if self is None:
             for router in Router.routers:
                 router.printRoutingTable()
@@ -136,6 +215,11 @@ class Router():
             print(self.routingTable.__str__(self))
 
     def initRoutingTables(self=None):
+        """
+        Initialize all the routing tables with only the directly connected
+        networks.
+        Note: If self is not None it only initialize this router routing table.
+        """
         if self is None:
             for router in Router.routers:
                 router.initRoutingTables()
@@ -150,6 +234,10 @@ class Router():
                 self.routingTable.update(network, conn, 0)
 
     def updateRoutingTable(self=None):
+        """
+        Update the routing table for all routers.
+        Note: If self is not none, it only updates this router.
+        """
         if self is None:
             changes = False
             for router in Router.routers:
