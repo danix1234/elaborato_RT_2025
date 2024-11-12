@@ -10,7 +10,7 @@ class RoutingTable():
         res = f"Routing Table of {router.name}:"
         for i, dest in enumerate(self.destination):
             nextHop = self.nextHop[i]
-            nextRouter = Router.findRouter(nextHop, router).name
+            nextRouter = Router.findRouter(nextHop).name
             distance = self.distance[i]
             res += f'\n{dest} via ({nextRouter}) {nextHop}, [{distance}]'
         return res
@@ -54,9 +54,7 @@ class Router():
         Router.connectionSide2.append(ipAddrOther)
         Router.connectionNetwork.append(ipNetwork)
 
-    def findRouter(ipAddr, self=None):
-        if self is not None and ipAddr == "0.0.0.0":
-            return self
+    def findRouter(ipAddr):
         for router in Router.routers:
             if ipAddr in router.ipaddr:
                 return router
@@ -103,7 +101,12 @@ class Router():
         else:
             for i in self.getConnectedIndexes():
                 network = Router.connectionNetwork[i]
-                self.routingTable.update(network, "0.0.0.0", 0)
+                conn1 = Router.connectionSide1[i]
+                conn2 = Router.connectionSide2[i]
+                conn = conn1
+                if conn2 in self.ipaddr:
+                    conn = conn2
+                self.routingTable.update(network, conn, 0)
 
 
 # build topology represented in topology.png image
