@@ -149,5 +149,7 @@ print(routerD)
 print()
 Router.printConnections()
 print()
+
+# initialize the routing tables with the connected networks
 Router.initRoutingTables()
 Router.printRoutingTable()
