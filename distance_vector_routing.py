@@ -6,12 +6,13 @@ class RoutingTable():
         self.nextHop = []
         self.distance = []
 
-    def __str__(self, name):
-        res = f"Routing Table of {name}:"
+    def __str__(self, router):
+        res = f"Routing Table of {router.name}:"
         for i, dest in enumerate(self.destination):
             nextHop = self.nextHop[i]
+            nextRouter = Router.findRouter(nextHop, router).name
             distance = self.distance[i]
-            res += f'\n{dest} via {nextHop}, [{distance}]'
+            res += f'\n{dest} via ({nextRouter}) {nextHop}, [{distance}]'
         return res
 
     def update(self, destination, nextHop, distance):
@@ -53,7 +54,9 @@ class Router():
         Router.connectionSide2.append(ipAddrOther)
         Router.connectionNetwork.append(ipNetwork)
 
-    def findRouter(ipAddr):
+    def findRouter(ipAddr, self=None):
+        if self is not None and ipAddr == "0.0.0.0":
+            return self
         for router in Router.routers:
             if ipAddr in router.ipaddr:
                 return router
@@ -91,7 +94,7 @@ class Router():
             for router in Router.routers:
                 router.printRoutingTable()
         else:
-            print(self.routingTable.__str__(self.name))
+            print(self.routingTable.__str__(self))
 
     def initRoutingTables(self=None):
         if self is None:
