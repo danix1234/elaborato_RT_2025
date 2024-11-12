@@ -37,10 +37,6 @@ class Router():
         return f'{self.name}, {self.nicks}, {self.ipaddr}'
 
     def addNick(self, interfaceName, ipAddr):
-        """
-        interfaceName and ipAddr must be relative to the same nick
-        both interfaceName and ipAddr must be strings
-        """
         self.nicks.append(interfaceName)
         self.ipaddr.append(ipAddr)
 
