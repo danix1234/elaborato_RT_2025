@@ -25,13 +25,9 @@ class router():
     def addConnection(self, ipAddrSelf, ipAddrOther):
         if ipAddrSelf not in self.ipaddr:
             raise ValueError("invalid connection!")
-        if ipAddrSelf not in self.connections:
-            self.connections[ipAddrSelf] = [ipAddrOther]
-        else:
-            conn = self.connections[ipAddrSelf]
-            if ipAddrOther in conn:
-                raise ValueError("connecton already established")
-            conn.append(ipAddrOther)
+        if ipAddrSelf in self.connections:
+            raise ValueError("connecton already established")
+        self.connections[ipAddrSelf] = ipAddrOther
 
 
 routerA = router("A")
