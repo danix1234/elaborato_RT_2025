@@ -18,7 +18,7 @@ class RoutingTable():
     def update(self, destination, nextHop, distance):
         if destination in self.destination:
             i = self.destination.index(destination)
-            if self.distance[i] < distance:
+            if self.distance[i] <= distance:
                 return False
             if self.nextHop[i] == nextHop and self.distance[i] == distance:
                 return False
@@ -128,6 +128,20 @@ class Router():
                     conn = conn2
                 self.routingTable.update(network, conn, 0)
 
+    def updateRoutingTable(self=None):
+        if self is None:
+            changes = False
+            for router in Router.routers:
+                changes |= router.updateRoutingTable()
+            return changes
+        else:
+            changes = False
+            for router, nextHop in self.getNeighbors().items():
+                selfRib = self.routingTable
+                nearRib = router.routingTable
+                changes |= selfRib.updateAll(nearRib, nextHop)
+            return changes
+
 
 # build topology represented in topology.png image
 routerA = Router("A")
@@ -158,6 +172,13 @@ Router.printConnections()
 print()
 
 # initialize the routing tables with the connected networks
+print("INITIALIZATION:")
 Router.initRoutingTables()
 Router.printRoutingTable()
-print()
+
+# keep updating distance until no more change is made
+phase = 0
+while Router.updateRoutingTable():
+    phase += 1
+    print(f"\nPHASE {phase}")
+    Router.printRoutingTable()
