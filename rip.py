@@ -39,7 +39,8 @@ class RoutingTable():
         Pretty formatting of the Routing Table.
         """
         res = f"Routing Table of {router.name}:"
-        for i, dest in enumerate(sorted(self.destination)):
+        for dest in sorted(self.destination):
+            i = self.destination.index(dest)
             nextHop = self.nextHop[i]
             nextName = Router.findRouter(nextHop).name
             distance = self.distance[i]
