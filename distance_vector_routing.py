@@ -2,8 +2,9 @@
 
 class router():
     routers = []
-    connections = {}
-    connNetwork = {}
+    connectionSide1 = []
+    connectionSide2 = []
+    connectionNetwork = []
 
     def __init__(self, name):
         self.name = name
@@ -23,14 +24,15 @@ class router():
         self.ipaddr.append(ipAddr)
 
     def addConnection(ipAddrSelf, ipAddrOther, ipNetwork):
-        router.connections[ipAddrSelf] = ipAddrOther
-        router.connNetwork[ipAddrSelf] = ipNetwork
+        router.connectionSide1.append(ipAddrSelf)
+        router.connectionSide2.append(ipAddrOther)
+        router.connectionNetwork.append(ipNetwork)
 
     def printConnections():
         print("Connections:")
-        for conn in router.connections:
-            conn2 = router.connections[conn]
-            connNetwork = router.connNetwork[conn]
+        for i, conn in enumerate(router.connectionSide1):
+            conn2 = router.connectionSide2[i]
+            connNetwork = router.connectionNetwork[i]
             print(conn, "-", conn2, "-->", connNetwork)
 
 
