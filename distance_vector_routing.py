@@ -14,11 +14,6 @@ class RoutingTable():
             res += f'\n{dest},{nextHop},{distance}'
         return res
 
-    def addEntry(self, destination, nextHop, distance):
-        self.destination = destination
-        self.nextHop = nextHop
-        self.distance = distance
-
 
 class Router():
     routers = []
