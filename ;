@@ -6,13 +6,9 @@ class RoutingTable():
         self.nextHop = []
         self.distance = []
 
-    def __str__(self, name):
-        res = f"Routing Table of {name}:"
-        for i, dest in enumerate(self.destination):
-            nextHop = self.nextHop[i]
-            distance = self.distance[i]
-            res += f'\n{dest},{nextHop},{distance}'
-        return res
+    def __str__(self):
+        return f'{self.destination}, {self.nextHop}, {self.distance}'
+        pass
 
     def addEntry(self, destination, nextHop, distance):
         self.destination = destination
@@ -49,37 +45,19 @@ class Router():
         Router.connectionSide2.append(ipAddrOther)
         Router.connectionNetwork.append(ipNetwork)
 
-    def findRouter(ipAddr):
-        for router in Router.routers:
-            if ipAddr in router.ipaddr:
-                return router
-
-    def printConnections(self=None):
-        if self is not None:
-            print(f"Connections of {self.name}")
-        else:
-            print("Connections:")
+    def printConnections():
+        print("Connections:")
         for i, conn in enumerate(Router.connectionSide1):
             conn2 = Router.connectionSide2[i]
             connNetwork = Router.connectionNetwork[i]
-            if self is not None:
-                if conn not in self.ipaddr and conn2 not in self.ipaddr:
-                    continue
-                else:
-                    if conn2 in self.ipaddr:
-                        tmp = conn
-                        conn = conn2
-                        conn2 = tmp
-            r1 = Router.findRouter(conn).name
-            r2 = Router.findRouter(conn2).name
-            print(f"({r1}) {conn} - ({r2}) {conn2} --> {connNetwork}")
+            print(conn, "-", conn2, "-->", connNetwork)
 
-    def printRoutingTable(self=None):
+    def printRoutingTable(self):
         if self is None:
             for router in Router.routers:
-                router.printRoutingTable()
+                pass
         else:
-            print(self.routingTable.__str__(self.name))
+            pass
 
 
 # build topology represented in topology.png image
@@ -105,7 +83,4 @@ print(routerA)
 print(routerB)
 print(routerC)
 print(routerD)
-routerA.printRoutingTable()
-routerC.printConnections()
-Router.printRoutingTable()
 Router.printConnections()
