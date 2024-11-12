@@ -50,3 +50,22 @@ La classe Routing table fornisce principalmente operazione per aggiornare le
 Il file topology.png mostra la topologia di esempio utilizzata nello script,
     quindi si faccia riferimento a tale immagine per la comprensione 
     dell'output del programma.
+
+L'output del programma comprende molte informazioni. In ordine mostra:
+    - la configurazione di ogni router
+    - tutte le connessioni stabilite tra i router
+    - le tabelle di routing di ogni router, per ogni fase di update. Con fase
+        si intende il periodo di tempo in cui la tabella di routing di ogni
+        router è stata aggiornata una singola volta.
+
+Viene riportato successivamente il formato di una tabella di routing:
+    - se la linea si riferisce ad una destinazione non direttamente connessa:
+        <rete ip di destinazione>/24 [<distanza>] via (<nome del router>) <prossimo salto>, on <interfaccia>
+    - altrimenti:
+        <rete ip di destinazione>/24 is directly connect, on <interfaccia>
+
+    Nota: la maschera di rete /24 non è calcolata, ma è stata inserita direttamente
+            nell'ouput, supponendo che le reti abbiano tutte maschere di rete /24.
+        Inoltre la scelta di inserire una maschera di rete solo nell'output del
+            programma è per avere un output che quanto più sia simile a quello
+            presente nelle slide del laboratorio relativo al protocollo RIP.
