@@ -34,28 +34,25 @@ class router():
             print(conn, "-", conn2, "-->", connNetwork)
 
 
+# build topology represented in topology.png image
 routerA = router("A")
 routerB = router("B")
 routerC = router("C")
 routerD = router("D")
-
 routerA.addNick("eth1", "192.168.1.1")
-
 routerB.addNick("eth1", "192.168.2.1")
 routerB.addNick("eth2", "192.168.4.1")
 routerB.addNick("eth3", "192.168.1.2")
-
 routerC.addNick("eth1", "192.168.2.2")
 routerC.addNick("eth2", "192.168.3.1")
-
 routerD.addNick("eth1", "192.168.4.2")
 routerD.addNick("eth2", "192.168.3.2")
-
 router.addConnection("192.168.1.1", "192.168.1.2", "192.168.1.0")
 router.addConnection("192.168.2.1", "192.168.2.2", "192.168.2.0")
 router.addConnection("192.168.3.1", "192.168.3.2", "192.168.3.0")
 router.addConnection("192.168.4.1", "192.168.4.2", "192.168.4.0")
 
+# show topology
 print(routerA)
 print(routerB)
 print(routerC)
