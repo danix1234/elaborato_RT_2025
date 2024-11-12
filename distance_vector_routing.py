@@ -18,6 +18,8 @@ class RoutingTable():
     def update(self, destination, nextHop, distance):
         if destination in self.destination:
             i = self.destination.index(destination)
+            if self.distance[i] < distance:
+                return False
             if self.nextHop[i] == nextHop and self.distance[i] == distance:
                 return False
             self.nextHop[i] = nextHop
