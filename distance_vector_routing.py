@@ -125,6 +125,7 @@ Router.addConnection("192.168.3.1", "192.168.3.2", "192.168.3.0")
 Router.addConnection("192.168.4.1", "192.168.4.2", "192.168.4.0")
 
 # show topology
+print("Routers:")
 print(routerA)
 print(routerB)
 print(routerC)
