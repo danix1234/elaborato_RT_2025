@@ -1,6 +1,7 @@
 #!/bin/python3
 
-class router():
+
+class Router():
     routers = []
     connectionSide1 = []
     connectionSide2 = []
@@ -24,23 +25,23 @@ class router():
         self.ipaddr.append(ipAddr)
 
     def addConnection(ipAddrSelf, ipAddrOther, ipNetwork):
-        router.connectionSide1.append(ipAddrSelf)
-        router.connectionSide2.append(ipAddrOther)
-        router.connectionNetwork.append(ipNetwork)
+        Router.connectionSide1.append(ipAddrSelf)
+        Router.connectionSide2.append(ipAddrOther)
+        Router.connectionNetwork.append(ipNetwork)
 
     def printConnections():
         print("Connections:")
-        for i, conn in enumerate(router.connectionSide1):
-            conn2 = router.connectionSide2[i]
-            connNetwork = router.connectionNetwork[i]
+        for i, conn in enumerate(Router.connectionSide1):
+            conn2 = Router.connectionSide2[i]
+            connNetwork = Router.connectionNetwork[i]
             print(conn, "-", conn2, "-->", connNetwork)
 
 
 # build topology represented in topology.png image
-routerA = router("A")
-routerB = router("B")
-routerC = router("C")
-routerD = router("D")
+routerA = Router("A")
+routerB = Router("B")
+routerC = Router("C")
+routerD = Router("D")
 routerA.addNick("eth1", "192.168.1.1")
 routerB.addNick("eth1", "192.168.2.1")
 routerB.addNick("eth2", "192.168.4.1")
@@ -49,14 +50,14 @@ routerC.addNick("eth1", "192.168.2.2")
 routerC.addNick("eth2", "192.168.3.1")
 routerD.addNick("eth1", "192.168.4.2")
 routerD.addNick("eth2", "192.168.3.2")
-router.addConnection("192.168.1.1", "192.168.1.2", "192.168.1.0")
-router.addConnection("192.168.2.1", "192.168.2.2", "192.168.2.0")
-router.addConnection("192.168.3.1", "192.168.3.2", "192.168.3.0")
-router.addConnection("192.168.4.1", "192.168.4.2", "192.168.4.0")
+Router.addConnection("192.168.1.1", "192.168.1.2", "192.168.1.0")
+Router.addConnection("192.168.2.1", "192.168.2.2", "192.168.2.0")
+Router.addConnection("192.168.3.1", "192.168.3.2", "192.168.3.0")
+Router.addConnection("192.168.4.1", "192.168.4.2", "192.168.4.0")
 
 # show topology
 print(routerA)
 print(routerB)
 print(routerC)
 print(routerD)
-router.printConnections()
+Router.printConnections()
