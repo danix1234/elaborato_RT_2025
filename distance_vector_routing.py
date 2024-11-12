@@ -1,15 +1,15 @@
 #!/bin/python3
 
 class router():
-    nicks = []
-    ipaddr = []
-    connections = {}
 
     def __init__(self, name):
         self.name = name
+        self.nicks = []
+        self.ipaddr = []
+        self.connections = {}
 
     def __str__(self):
-        return f'{self.nicks}, {self.ipaddr}, {self.connections}'
+        return f'{self.name}, {self.nicks}, {self.ipaddr}, {self.connections}'
 
     def addNick(self, interfaceName, ipAddr):
         """
@@ -32,7 +32,23 @@ class router():
 
 
 routerA = router("A")
+routerB = router("B")
+routerC = router("C")
+routerD = router("D")
+
 routerA.addNick("eth1", "192.168.1.1")
-routerA.addConnection("192.168.1.1", "192.168.1.2")
-routerA.addConnection("192.168.1.1", "192.168.1.3")
+
+routerB.addNick("eth1", "192.168.2.1")
+routerB.addNick("eth2", "192.168.4.1")
+routerB.addNick("eth3", "192.168.1.2")
+
+routerC.addNick("eth1", "192.168.1.1")
+routerC.addNick("eth2", "192.168.1.1")
+
+routerD.addNick("eth1", "192.168.1.1")
+routerD.addNick("eth2", "192.168.1.1")
+
 print(routerA)
+print(routerB)
+print(routerC)
+print(routerD)
