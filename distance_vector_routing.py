@@ -42,11 +42,11 @@ routerB.addNick("eth1", "192.168.2.1")
 routerB.addNick("eth2", "192.168.4.1")
 routerB.addNick("eth3", "192.168.1.2")
 
-routerC.addNick("eth1", "192.168.1.1")
-routerC.addNick("eth2", "192.168.1.1")
+routerC.addNick("eth1", "192.168.2.2")
+routerC.addNick("eth2", "192.168.3.1")
 
-routerD.addNick("eth1", "192.168.1.1")
-routerD.addNick("eth2", "192.168.1.1")
+routerD.addNick("eth1", "192.168.4.2")
+routerD.addNick("eth2", "192.168.3.2")
 
 print(routerA)
 print(routerB)
