@@ -58,7 +58,11 @@ class Router():
         self.routingTable = RoutingTable()
 
     def __str__(self):
-        return f'{self.name}, {self.nicks}, {self.ipaddr}'
+        acc = f"Router {self.name}:\n"
+        for i, nick in enumerate(self.nicks):
+            ipAddr = self.ipaddr[i]
+            acc += f"{nick} {ipAddr}\n"
+        return acc
 
     def addNick(self, interfaceName, ipAddr):
         self.nicks.append(interfaceName)
@@ -179,17 +183,14 @@ Router.addConnection("192.168.3.1", "192.168.3.2", "192.168.3.0")
 Router.addConnection("192.168.4.1", "192.168.4.2", "192.168.4.0")
 
 # show topology
-print("Routers:")
 print(routerA)
 print(routerB)
 print(routerC)
 print(routerD)
-print()
 Router.printConnections()
-print()
 
 # initialize the routing tables with the connected networks
-print("INITIALIZATION:")
+print("\nINITIALIZATION:")
 Router.initRoutingTables()
 Router.printRoutingTable()
 
