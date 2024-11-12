@@ -1,18 +1,18 @@
 #!/bin/python3
 
 class router():
-    # keep track of all routers has. Necessary for broadcast operations
     routers = []
+    connections = {}
+    connNetwork = {}
 
     def __init__(self, name):
         self.name = name
         self.nicks = []
         self.ipaddr = []
-        self.connections = {}
         self.routers.append(self)
 
     def __str__(self):
-        return f'{self.name}, {self.nicks}, {self.ipaddr}, {self.connections}'
+        return f'{self.name}, {self.nicks}, {self.ipaddr}'
 
     def addNick(self, interfaceName, ipAddr):
         """
@@ -22,12 +22,16 @@ class router():
         self.nicks.append(interfaceName)
         self.ipaddr.append(ipAddr)
 
-    def addConnection(self, ipAddrSelf, ipAddrOther):
-        if ipAddrSelf not in self.ipaddr:
-            raise ValueError("invalid connection!")
-        if ipAddrSelf in self.connections:
-            raise ValueError("connecton already established")
-        self.connections[ipAddrSelf] = ipAddrOther
+    def addConnection(ipAddrSelf, ipAddrOther, ipNetwork):
+        router.connections[ipAddrSelf] = ipAddrOther
+        router.connNetwork[ipAddrSelf] = ipNetwork
+
+    def printConnections():
+        print("Connections:")
+        for conn in router.connections:
+            conn2 = router.connections[conn]
+            connNetwork = router.connNetwork[conn]
+            print(conn, "-", conn2, "-->", connNetwork)
 
 
 routerA = router("A")
@@ -47,7 +51,13 @@ routerC.addNick("eth2", "192.168.3.1")
 routerD.addNick("eth1", "192.168.4.2")
 routerD.addNick("eth2", "192.168.3.2")
 
+router.addConnection("192.168.1.1", "192.168.1.2", "192.168.1.0")
+router.addConnection("192.168.2.1", "192.168.2.2", "192.168.2.0")
+router.addConnection("192.168.3.1", "192.168.3.2", "192.168.3.0")
+router.addConnection("192.168.4.1", "192.168.4.2", "192.168.4.0")
+
 print(routerA)
 print(routerB)
 print(routerC)
 print(routerD)
+router.printConnections()
