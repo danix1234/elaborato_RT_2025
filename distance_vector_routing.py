@@ -11,8 +11,21 @@ class RoutingTable():
         for i, dest in enumerate(self.destination):
             nextHop = self.nextHop[i]
             distance = self.distance[i]
-            res += f'\n{dest},{nextHop},{distance}'
+            res += f'\n{dest} via {nextHop}, [{distance}]'
         return res
+
+    def update(self, destination, nextHop, distance):
+        if destination in self.destination:
+            i = self.destination.index(destination)
+            if self.nextHop[i] == nextHop and self.distance[i] == distance:
+                return False
+            self.nextHop[i] = nextHop
+            self.distance[i] = distance
+        else:
+            self.destination.append(destination)
+            self.nextHop.append(nextHop)
+            self.distance.append(distance)
+        return True
 
 
 class Router():
@@ -45,6 +58,14 @@ class Router():
             if ipAddr in router.ipaddr:
                 return router
 
+    def getConnectedIndexes(self):
+        indexes = []
+        for i, conn1 in enumerate(Router.connectionSide1):
+            conn2 = Router.connectionSide2[i]
+            if conn1 in self.ipaddr or conn2 in self.ipaddr:
+                indexes.append(i)
+        return indexes
+
     def printConnections(self=None):
         if self is not None:
             print(f"Connections of {self.name}")
@@ -72,6 +93,15 @@ class Router():
         else:
             print(self.routingTable.__str__(self.name))
 
+    def initRoutingTables(self=None):
+        if self is None:
+            for router in Router.routers:
+                router.initRoutingTables()
+        else:
+            for i in self.getConnectedIndexes():
+                network = Router.connectionNetwork[i]
+                self.routingTable.update(network, "0.0.0.0", 0)
+
 
 # build topology represented in topology.png image
 routerA = Router("A")
@@ -96,7 +126,8 @@ print(routerA)
 print(routerB)
 print(routerC)
 print(routerD)
-routerA.printRoutingTable()
-routerC.printConnections()
-Router.printRoutingTable()
+print()
 Router.printConnections()
+print()
+Router.initRoutingTables()
+Router.printRoutingTable()
