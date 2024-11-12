@@ -70,15 +70,15 @@ class Router():
         return indexes
 
     def getNeighbors(self):
-        neighbors = set()
+        neighbors = {}
         for i in self.getConnectedIndexes():
             conn1 = Router.connectionSide1[i]
             conn2 = Router.connectionSide2[i]
             conn = conn1
             if conn1 in self.ipaddr:
                 conn = conn2
-            neighbors.add(Router.findRouter(conn))
-        return list(neighbors)
+            neighbors[Router.findRouter(conn)] = conn
+        return neighbors
 
     def printConnections(self=None):
         if self is not None:
