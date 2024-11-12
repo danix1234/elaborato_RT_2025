@@ -30,6 +30,13 @@ class RoutingTable():
             self.distance.append(distance)
         return True
 
+    def updateAll(self, routingTable, nextHop):
+        changes = False
+        for i, destination in enumerate(routingTable.destination):
+            distance = routingTable.distance[i] + 1
+            changes |= self.update(destination, nextHop, distance)
+        return changes
+
 
 class Router():
     routers = []
@@ -153,3 +160,4 @@ print()
 # initialize the routing tables with the connected networks
 Router.initRoutingTables()
 Router.printRoutingTable()
+print()
