@@ -15,9 +15,9 @@ class RoutingTable():
             interface = router.findNick(nextHop)
             correctSide = nextHop in router.ipaddr
             if not correctSide:
-                res += f'\n{dest} [{distance}] via ({nextName}) {nextHop},'
+                res += f'\n{dest}/24 [{distance}] via ({nextName}) {nextHop},'
             else:
-                res += f'\n{dest} is directly connected,'
+                res += f'\n{dest}/24 is directly connected,'
             res += f' on {interface}'
         return res
 
@@ -122,7 +122,7 @@ class Router():
                         conn2 = tmp
             r1 = Router.findRouter(conn).name
             r2 = Router.findRouter(conn2).name
-            print(f"({r1}) {conn} - ({r2}) {conn2} --> {connNetwork}")
+            print(f"({r1}) {conn} - ({r2}) {conn2}  -->  {connNetwork}/24")
 
     def printRoutingTable(self=None):
         if self is None:
@@ -193,7 +193,7 @@ print("INITIALIZATION:")
 Router.initRoutingTables()
 Router.printRoutingTable()
 
-# keep updating distance until no more change is made
+# keep updating distance until no more changes are made
 phase = 0
 while Router.updateRoutingTable():
     phase += 1
