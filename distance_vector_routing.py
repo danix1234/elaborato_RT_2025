@@ -1,12 +1,15 @@
 #!/bin/python3
 
 class router():
+    # keep track of all routers has. Necessary for broadcast operations
+    routers = []
 
     def __init__(self, name):
         self.name = name
         self.nicks = []
         self.ipaddr = []
         self.connections = {}
+        self.routers.append(self)
 
     def __str__(self):
         return f'{self.name}, {self.nicks}, {self.ipaddr}, {self.connections}'
